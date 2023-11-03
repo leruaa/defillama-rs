@@ -38,6 +38,19 @@ impl FromStr for Coin {
     }
 }
 
+impl TryFrom<Coin> for Address {
+    type Error = Error;
+
+    fn try_from(value: Coin) -> Result<Self, Self::Error> {
+        match value {
+            Coin::Address(_, address) => Ok(address),
+            Coin::CoingGecko(id) => {
+                bail!("The address can't be retrieved from CoinGecko id '{id}'")
+            }
+        }
+    }
+}
+
 #[derive(Debug, Clone, DeserializeFromStr, PartialEq, Hash)]
 pub enum Chain {
     Ethereum,
