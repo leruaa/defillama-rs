@@ -14,6 +14,8 @@ mod dashu {
     use anyhow::Error;
     use dashu_float::{round::mode::HalfAway, DBig, FBig};
 
+    use super::Price;
+
     impl TryFrom<Price> for DBig {
         type Error = Error;
 
