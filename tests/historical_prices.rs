@@ -10,7 +10,10 @@ async fn current_prices() {
             .unwrap(),
     );
 
-    let prices = client.current_prices(&[weth.clone()]).await.unwrap();
+    let prices = client
+        .historical_prices(1677266409, &[weth.clone()])
+        .await
+        .unwrap();
 
     assert_eq!(prices.len(), 1);
     assert_eq!(prices.get(&weth).unwrap().symbol, "WETH");

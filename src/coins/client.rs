@@ -4,7 +4,7 @@ use anyhow::{Context, Result};
 use itertools::Itertools;
 use reqwest::Client as HttpClient;
 
-use crate::CurrentCoinsPayload;
+use crate::CoinsPayload;
 
 use super::types::{Coin, Price};
 
@@ -19,13 +19,36 @@ impl Client {
 
         let prices = self
             .http_client
-            .get(format!("{}/prices/current/{}", self.base_url, path))
+            .get(format!("{}/prices/current/{path}", self.base_url))
             .send()
             .await
             .context("Failed to send current prices request to DefiLlama")?
-            .json::<CurrentCoinsPayload>()
+            .json::<CoinsPayload>()
             .await
             .context("Failed to deserialize DefiLlama current prices response")?;
+
+        Ok(prices.coins)
+    }
+
+    pub async fn historical_prices(
+        &self,
+        timestamp: u64,
+        coins: &[Coin],
+    ) -> Result<HashMap<Coin, Price>> {
+        let path = coins.iter().map(ToString::to_string).join(",");
+
+        let prices = self
+            .http_client
+            .get(format!(
+                "{}/prices/historical/{timestamp}/{path}",
+                self.base_url
+            ))
+            .send()
+            .await
+            .context("Failed to send historical prices request to DefiLlama")?
+            .json::<CoinsPayload>()
+            .await
+            .context("Failed to deserialize DefiLlama historical prices response")?;
 
         Ok(prices.coins)
     }
