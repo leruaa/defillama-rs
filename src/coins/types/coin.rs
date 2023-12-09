@@ -82,3 +82,16 @@ impl FromStr for Chain {
         }
     }
 }
+
+impl TryFrom<u64> for Chain {
+    type Error = Error;
+
+    fn try_from(value: u64) -> Result<Self, Self::Error> {
+        match value {
+            1 => Ok(Chain::Ethereum),
+            56 => Ok(Chain::Bsc),
+            43114 => Ok(Chain::Avax),
+            other => panic!("Chain '{}' not supported", other),
+        }
+    }
+}
