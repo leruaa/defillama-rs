@@ -9,23 +9,21 @@ pub struct Price {
     pub confidence: f64,
 }
 
-#[cfg(feature = "dashu")]
-mod dashu {
+#[cfg(feature = "bigdecimal")]
+mod bigdecimal {
     use anyhow::Error;
-    use dashu_float::{round::mode::HalfAway, DBig, FBig};
+    use bigdecimal::BigDecimal;
 
     use super::Price;
 
-    impl TryFrom<Price> for DBig {
+    impl TryFrom<Price> for BigDecimal {
         type Error = Error;
 
         fn try_from(value: Price) -> Result<Self, Self::Error> {
-            FBig::<HalfAway, 2>::try_from(value.price)
-                .map(|d| d.with_base::<10>().value())
-                .map_err(Into::into)
+            BigDecimal::try_from(value.price).map_err(Into::into)
         }
     }
 }
 
-#[cfg(feature = "dashu")]
-pub use dashu::*;
+#[cfg(feature = "bigdecimal")]
+pub use bigdecimal::*;
