@@ -55,6 +55,7 @@ impl TryFrom<Coin> for Address {
 pub enum Chain {
     Ethereum,
     Bsc,
+    Polygon,
     Avax,
 }
 
@@ -63,6 +64,7 @@ impl Display for Chain {
         let chain = match self {
             Chain::Ethereum => "ethereum",
             Chain::Bsc => "bsc",
+            Chain::Polygon => "polygon",
             Chain::Avax => "avax",
         };
 
@@ -77,6 +79,7 @@ impl FromStr for Chain {
         match s {
             "ethereum" => Ok(Chain::Ethereum),
             "bsc" => Ok(Chain::Bsc),
+            "polygon" => Ok(Chain::Polygon),
             "avax" => Ok(Chain::Avax),
             other => bail!("Chain '{}' not supported", other),
         }
@@ -90,6 +93,7 @@ impl TryFrom<u64> for Chain {
         match value {
             1 => Ok(Chain::Ethereum),
             56 => Ok(Chain::Bsc),
+            137 => Ok(Chain::Polygon),
             43114 => Ok(Chain::Avax),
             other => panic!("Chain '{}' not supported", other),
         }
