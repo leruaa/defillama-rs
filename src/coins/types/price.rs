@@ -24,6 +24,3 @@ mod bigdecimal {
         }
     }
 }
-
-#[cfg(feature = "bigdecimal")]
-pub use self::bigdecimal::*;
