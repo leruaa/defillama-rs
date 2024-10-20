@@ -2,7 +2,7 @@ use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct Price {
-    pub decimals: u8,
+    pub decimals: Option<u8>,
     pub symbol: String,
     pub price: f64,
     pub timestamp: u64,
