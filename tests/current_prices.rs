@@ -1,3 +1,5 @@
+use core::slice;
+
 use defillama::{Chain, Coin, CoinsClient};
 
 #[tokio::test]
@@ -10,7 +12,7 @@ async fn current_prices() {
             .unwrap(),
     );
 
-    let prices = client.current_prices(&[weth.clone()]).await.unwrap();
+    let prices = client.current_prices(slice::from_ref(&weth)).await.unwrap();
 
     assert_eq!(prices.len(), 1);
     assert_eq!(prices.get(&weth).unwrap().symbol, "WETH");

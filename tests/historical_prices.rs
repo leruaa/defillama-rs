@@ -1,3 +1,5 @@
+use core::slice;
+
 use defillama::{Chain, Coin, CoinsClient};
 
 #[tokio::test]
@@ -11,7 +13,7 @@ async fn current_prices() {
     );
 
     let prices = client
-        .historical_prices(1677266409, &[weth.clone()])
+        .historical_prices(1677266409, slice::from_ref(&weth))
         .await
         .unwrap();
 
